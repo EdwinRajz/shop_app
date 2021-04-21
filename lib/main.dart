@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
+import '../pages/user_products_page.dart';
 import './pages/cart_page.dart';
 import './pages/orders_page.dart';
 import './pages/products_overview_page.dart';
@@ -10,9 +10,10 @@ import './providers/products_provider.dart';
 import './providers/cart.dart';
 import './providers/orders.dart';
 
+
 void main() => runApp(ShopApp());
 
-//vid 215
+//vid 216
 class ShopApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -40,6 +41,7 @@ class ShopApp extends StatelessWidget {
           ProductDetailPage.routeName: (ctx) => ProductDetailPage(),
           CartPage.routeName: (ctx) => CartPage(),
           OrdersPage.routeName: (ctx) =>OrdersPage(),
+          UserProductsPage.routeName: (ctx) => UserProductsPage(),
         },
       ),
     );

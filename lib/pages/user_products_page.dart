@@ -4,18 +4,20 @@ import 'package:provider/provider.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/user_products_item.dart';
 import '../providers/products_provider.dart';
+import '../pages/edit_products_page.dart';
 
 class UserProductsPage extends StatelessWidget {
-  static const routeName = '/user-products';
+  static const String routeName = '/user-products';
   @override
   Widget build(BuildContext context) {
-    final productsData = Provider.of<Products>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your products'),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(EditProductsPage.routeName);
+            },
             icon: Icon(Icons.add),
           )
         ],

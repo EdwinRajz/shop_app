@@ -9,11 +9,11 @@ import './pages/product_detail_page.dart';
 import './providers/products_provider.dart';
 import './providers/cart.dart';
 import './providers/orders.dart';
-
+import '../pages/edit_products_page.dart';
 
 void main() => runApp(ShopApp());
 
-//vid 216
+//vid 217
 class ShopApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -40,8 +40,9 @@ class ShopApp extends StatelessWidget {
         routes: {
           ProductDetailPage.routeName: (ctx) => ProductDetailPage(),
           CartPage.routeName: (ctx) => CartPage(),
-          OrdersPage.routeName: (ctx) =>OrdersPage(),
+          OrdersPage.routeName: (ctx) => OrdersPage(),
           UserProductsPage.routeName: (ctx) => UserProductsPage(),
+          EditProductsPage.routeName: (ctx) => EditProductsPage(),
         },
       ),
     );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/products_provider.dart';
 import '../providers/product.dart';
 
 class EditProductsPage extends StatefulWidget {
@@ -57,10 +59,8 @@ class _EditProductsPageState extends State<EditProductsPage> {
       return;
     }
     _form.currentState.save();
-    print(_editedProduct.title);
-    print(_editedProduct.description);
-    print(_editedProduct.price);
-    print(_editedProduct.imageUrl);
+    Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -118,7 +118,7 @@ class _EditProductsPageState extends State<EditProductsPage> {
                   if (double.tryParse(value) == null) {
                     return 'Please enter a valid number';
                   }
-                  if (double.parse(value) >= 0) {
+                  if (double.parse(value) <= 0) {
                     return 'Please enter a number greater than 0';
                   }
                   return null;

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/products_provider.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/user_products_item.dart';
-import '../providers/products_provider.dart';
 import '../pages/edit_products_page.dart';
 
 class UserProductsPage extends StatelessWidget {
   static const String routeName = '/user-products';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +34,7 @@ class UserProductsPage extends StatelessWidget {
                 UserProductsItem(
                   productsData.items[index].title,
                   productsData.items[index].imageUrl,
+                  productsData.items[index].id,
                 ),
                 Divider(),
               ],

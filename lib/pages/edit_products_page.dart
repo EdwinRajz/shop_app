@@ -30,6 +30,7 @@ class _EditProductsPageState extends State<EditProductsPage> {
     'imageUrl': '',
   };
   bool _isInit = true;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -86,13 +87,21 @@ class _EditProductsPageState extends State<EditProductsPage> {
       return;
     }
     _form.currentState.save();
+    setState(() {
+      _isLoading = true;
+    });
     if (_editedProduct.id != null) {
       Provider.of<Products>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
+          setState(() {
+            _isLoading = false;
+          });
+      Navigator.of(context).pop();
     } else {
-      Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+      Provider.of<Products>(context, listen: false)
+          .addProduct(_editedProduct)
+          .then((_) => Navigator.of(context).pop());
     }
-    Navigator.of(context).pop();
   }
 
   @override
@@ -107,7 +116,9 @@ class _EditProductsPageState extends State<EditProductsPage> {
           ),
         ],
       ),
-      body: Padding(
+      body: _isLoading ? Center(
+        child: CircularProgressIndicator(),
+      ) : Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _form,

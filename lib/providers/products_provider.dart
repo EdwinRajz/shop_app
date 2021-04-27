@@ -67,11 +67,11 @@ class Products with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  void addProduct(Product product) {
+  Future<void> addProduct(Product product) {
     const String url =
         'https://shop-app-f2200-default-rtdb.europe-west1.firebasedatabase.app/products.json';
     Uri requestUrl = Uri.parse(url);
-    http
+    return http
         .post(
       requestUrl,
       body: json.encode(
@@ -86,7 +86,7 @@ class Products with ChangeNotifier {
     )
         .then((response) {
       final newProduct = Product(
-        id: DateTime.now().toString(),
+        id: json.decode(response.body)['name'],
         title: product.title,
         description: product.description,
         price: product.price,
@@ -95,7 +95,7 @@ class Products with ChangeNotifier {
       _items.add(newProduct);
 
       notifyListeners();
-    });
+    }); 
   }
 
   void updateProduct(String id, Product newProduct) {

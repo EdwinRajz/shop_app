@@ -13,7 +13,7 @@ import '../pages/edit_products_page.dart';
 
 void main() => runApp(ShopApp());
 
-//242
+//245
 class ShopApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

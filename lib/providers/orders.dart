@@ -32,12 +32,14 @@ class Orders with ChangeNotifier {
         body: json.encode(
           {
             'amount': total,
-            'products': cartProducts.map((cartProducts) => {
-                  'id': cartProducts.id,
-                  'title': cartProducts.title,
-                  'quantity': cartProducts.quantity,
-                  'price': cartProducts.price,
-                }).toList(),
+            'products': cartProducts
+                .map((cartProducts) => {
+                      'id': cartProducts.id,
+                      'title': cartProducts.title,
+                      'quantity': cartProducts.quantity,
+                      'price': cartProducts.price,
+                    })
+                .toList(),
             'dateTime': timestamp.toIso8601String(),
           },
         ));
@@ -50,6 +52,39 @@ class Orders with ChangeNotifier {
         products: cartProducts,
       ),
     );
+    notifyListeners();
+  }
+
+  Future<void> fetchAndSetOrders() async {
+    final String url =
+        'https://shop-app-f2200-default-rtdb.europe-west1.firebasedatabase.app/orders.json';
+    final response = await http.get(Uri.parse(url));
+    print(json.decode(response.body));
+    final List<OrderItem> loadedOrders = [];
+    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+    if (extractedData == null) {
+      return;
+    }
+    extractedData.forEach((orderId, orderData) {
+      loadedOrders.add(
+        OrderItem(
+          id: orderId,
+          amount: orderData['amount'],
+          products: (orderData['products'] as List<dynamic>)
+              .map(
+                (item) => CartItem(
+                  id: item['id'],
+                  title: item['title'],
+                  quantity: item['quantity'],
+                  price: item['price'],
+                ),
+              )
+              .toList(),
+          dateTime: DateTime.parse(orderData['dateTime']),
+        ),
+      );
+    });
+    _orders = loadedOrders.reversed.toList();
     notifyListeners();
   }
 }

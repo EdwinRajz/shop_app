@@ -29,9 +29,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    Uri requestUrl = Uri.parse(url);
     try {
-      final response = await http.get(requestUrl);
+      final response = await http.get(Uri.parse(url));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
@@ -52,10 +51,9 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    Uri requestUrl = Uri.parse(url);
     try {
       final response = await http.post(
-        requestUrl,
+        Uri.parse(url),
         body: json.encode(
           {
             'title': product.title,

@@ -10,10 +10,10 @@ import './providers/products_provider.dart';
 import './providers/cart.dart';
 import './providers/orders.dart';
 import '../pages/edit_products_page.dart';
-
+import '../pages/auth_page.dart';
 void main() => runApp(ShopApp());
 
-//254
+//258
 class ShopApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class ShopApp extends StatelessWidget {
           accentColor: Colors.deepOrange,
           fontFamily: 'Lato',
         ),
-        home: ProductsOverviewPage(),
+        home: AuthPage(),
         routes: {
           ProductDetailPage.routeName: (ctx) => ProductDetailPage(),
           CartPage.routeName: (ctx) => CartPage(),

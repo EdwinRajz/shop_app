@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/pages/products_overview_page.dart';
 import 'package:shop_app/providers/auth.dart';
 
 import '../pages/user_products_page.dart';
@@ -14,7 +15,7 @@ import '../pages/auth_page.dart';
 
 void main() => runApp(ShopApp());
 
-//258
+//264
 class ShopApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -23,31 +24,41 @@ class ShopApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (ctx) => Auth(), //error prone
         ),
-        ChangeNotifierProvider(
-          create: (ctx) => Products(),
+        ChangeNotifierProxyProvider<Auth, Products>(
+          create: (_) => Products('', []),
+          update: (ctx, auth, previousProducts) => Products(
+            auth.token,
+            previousProducts == null ? [] : previousProducts.items,
+          ),
         ),
         ChangeNotifierProvider(
           create: (ctx) => Cart(),
         ),
-        ChangeNotifierProvider(
-          create: (ctx) => Orders(),
+        ChangeNotifierProxyProvider<Auth, Orders>(
+          create: (_) => Orders('', []),
+          update: (ctx, auth, previousOrders) => Orders(
+            auth.token,
+            previousOrders == null ? [] : previousOrders.orders,
+          ),
         ),
       ],
-      child: MaterialApp(
-        title: 'Shop',
-        theme: ThemeData(
-          primarySwatch: Colors.purple,
-          accentColor: Colors.deepOrange,
-          fontFamily: 'Lato',
+      child: Consumer<Auth>(
+        builder: (ctx, auth, _) => MaterialApp(
+          title: 'Shop',
+          theme: ThemeData(
+            primarySwatch: Colors.purple,
+            accentColor: Colors.deepOrange,
+            fontFamily: 'Lato',
+          ),
+          home: auth.isAuth ? ProductsOverviewPage() : AuthPage(),
+          routes: {
+            ProductDetailPage.routeName: (ctx) => ProductDetailPage(),
+            CartPage.routeName: (ctx) => CartPage(),
+            OrdersPage.routeName: (ctx) => OrdersPage(),
+            UserProductsPage.routeName: (ctx) => UserProductsPage(),
+            EditProductsPage.routeName: (ctx) => EditProductsPage(),
+          },
         ),
-        home: AuthPage(),
-        routes: {
-          ProductDetailPage.routeName: (ctx) => ProductDetailPage(),
-          CartPage.routeName: (ctx) => CartPage(),
-          OrdersPage.routeName: (ctx) => OrdersPage(),
-          UserProductsPage.routeName: (ctx) => UserProductsPage(),
-          EditProductsPage.routeName: (ctx) => EditProductsPage(),
-        },
       ),
     );
   }

@@ -6,11 +6,15 @@ import '../models/http_exception.dart';
 import 'product.dart';
 
 class Products with ChangeNotifier {
-  
   List<Product> _items = [];
 
-  final String authToken;
-  Products(this.authToken, this._items);
+  String authToken;
+
+  void update(String token, List<Product> updatedItems) {
+    authToken = token;
+    _items = updatedItems;
+
+  }
 
   List<Product> get items {
     // if (_showFavoritesOnly) {

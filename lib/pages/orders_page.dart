@@ -16,7 +16,7 @@ class OrdersPage extends StatelessWidget {
     // final orderData = Provider.of<Orders>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('you orders'),
+        title: Text('your orders'),
       ),
       drawer: AppDrawer(),
       body: FutureBuilder(

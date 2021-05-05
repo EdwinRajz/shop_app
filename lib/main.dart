@@ -15,7 +15,7 @@ import '../pages/auth_page.dart';
 
 void main() => runApp(ShopApp());
 
-//264
+//267
 class ShopApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -29,6 +29,7 @@ class ShopApp extends StatelessWidget {
           update: (ctx, auth, previousProducts) => Products()
             ..update(
               auth.token,
+              auth.userID,
               previousProducts == null ? [] : previousProducts.items,
             ),
         ),

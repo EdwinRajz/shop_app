@@ -9,11 +9,12 @@ class Products with ChangeNotifier {
   List<Product> _items = [];
 
   String authToken;
+  String userId;
 
-  void update(String token, List<Product> updatedItems) {
+  void update(String token, String updatedUserId, List<Product> updatedItems) {
     authToken = token;
     _items = updatedItems;
-
+    userId = updatedUserId;
   }
 
   List<Product> get items {
@@ -41,6 +42,10 @@ class Products with ChangeNotifier {
       if (extractedData == null) {
         return;
       }
+      String favoriteResponseUrl =
+          'https://shop-app-f2200-default-rtdb.europe-west1.firebasedatabase.app/userFavorites/$userId.json?auth=$authToken';
+      final favoriteResponse = await http.get(Uri.parse(favoriteResponseUrl));
+      final favoriteData = json.decode(favoriteResponse.body);
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(Product(
           id: prodId,
@@ -48,7 +53,7 @@ class Products with ChangeNotifier {
           description: prodData['description'],
           price: prodData['price'],
           imageUrl: prodData['imageUrl'],
-          isFavorite: prodData['isFavorite'],
+          isFavorite: favoriteData == null ? false : favoriteData[prodId] ?? false,
         ));
       });
       _items = loadedProducts;
@@ -70,7 +75,6 @@ class Products with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
-            'isFavorite': product.isFavorite,
           },
         ),
       );

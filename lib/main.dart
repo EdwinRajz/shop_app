@@ -41,6 +41,7 @@ class ShopApp extends StatelessWidget {
           update: (ctx, auth, previousOrders) => Orders()
             ..update(
               auth.token,
+              auth.userID,
               previousOrders == null ? [] : previousOrders.orders,
             ),
         ),

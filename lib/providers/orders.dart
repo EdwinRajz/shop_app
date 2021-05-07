@@ -21,10 +21,12 @@ class OrderItem {
 class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
   String authToken;
+  String userId;
 
-  void update(String token, List<OrderItem> updatedOrder) {
+  void update(String token, String receivedUserId, List<OrderItem> updatedOrder) {
     authToken = token;
     _orders = updatedOrder;
+    userId = receivedUserId;
   }
 
   List<OrderItem> get orders {
@@ -33,7 +35,7 @@ class Orders with ChangeNotifier {
 
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     final String url =
-        'https://shop-app-f2200-default-rtdb.europe-west1.firebasedatabase.app/orders.json?auth=$authToken';
+        'https://shop-app-f2200-default-rtdb.europe-west1.firebasedatabase.app/orders/$userId.json?auth=$authToken';
     final timestamp = DateTime.now();
     final response = await http.post(Uri.parse(url),
         body: json.encode(
@@ -64,7 +66,7 @@ class Orders with ChangeNotifier {
 
   Future<void> fetchAndSetOrders() async {
     final String url =
-        'https://shop-app-f2200-default-rtdb.europe-west1.firebasedatabase.app/orders.json?auth=$authToken';
+        'https://shop-app-f2200-default-rtdb.europe-west1.firebasedatabase.app/orders/$userId.json?auth=$authToken';
     final response = await http.get(Uri.parse(url));
     print(json.decode(response.body));
     final List<OrderItem> loadedOrders = [];

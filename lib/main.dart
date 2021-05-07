@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/pages/products_overview_page.dart';
-import 'package:shop_app/providers/auth.dart';
 
+import '../pages/products_overview_page.dart';
+import '../pages/splash_page.dart';
+import '../providers/auth.dart';
 import '../pages/user_products_page.dart';
 import './pages/cart_page.dart';
 import './pages/orders_page.dart';
@@ -54,7 +55,16 @@ class ShopApp extends StatelessWidget {
             accentColor: Colors.deepOrange,
             fontFamily: 'Lato',
           ),
-          home: auth.isAuth ? ProductsOverviewPage() : AuthPage(),
+          home: auth.isAuth
+              ? ProductsOverviewPage()
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (ctx, authResultSnapshot) =>
+                      authResultSnapshot.connectionState ==
+                              ConnectionState.waiting
+                          ? SplashPage()
+                          : AuthPage(),
+                ),
           routes: {
             ProductDetailPage.routeName: (ctx) => ProductDetailPage(),
             CartPage.routeName: (ctx) => CartPage(),

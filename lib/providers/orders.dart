@@ -68,7 +68,7 @@ class Orders with ChangeNotifier {
     final String url =
         'https://shop-app-f2200-default-rtdb.europe-west1.firebasedatabase.app/orders/$userId.json?auth=$authToken';
     final response = await http.get(Uri.parse(url));
-    print(json.decode(response.body));
+   
     final List<OrderItem> loadedOrders = [];
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
     if (extractedData == null) {

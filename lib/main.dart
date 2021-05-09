@@ -16,7 +16,7 @@ import '../pages/auth_page.dart';
 
 void main() => runApp(ShopApp());
 
-//267
+//276
 class ShopApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

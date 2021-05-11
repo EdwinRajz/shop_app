@@ -15,58 +15,61 @@ class ProductItem extends StatelessWidget {
     print('rebuild widget');
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.of(context).pushNamed(
-            ProductDetailPage.routeName,
-            arguments: product.id,
-          );
-        },
-        child: GridTile(
-          child: Image.network(
-            product.imageUrl,
+      child: GridTile(
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushNamed(
+              ProductDetailPage.routeName,
+              arguments: product.id,
+            );
+          },
+          child: FadeInImage(
+            placeholder: AssetImage('lib/assets/images/product-placeholder.png'),
+            image: NetworkImage(
+              product.imageUrl,
+            ),
             fit: BoxFit.cover,
           ),
-          footer: GridTileBar(
-            backgroundColor: Colors.black87,
-            leading: Consumer<Product>(
-              builder: (ctx, product, _) => IconButton(
-                onPressed: () {
-                  product.toggleFavoriteStatus(
-                    authData.token,
-                    authData.userID,
-                  );
-                },
-                icon: Icon(
-                  product.isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: Theme.of(context).accentColor,
-                ),
-              ),
-            ),
-            title: Text(
-              product.title,
-              textAlign: TextAlign.center,
-            ),
-            trailing: IconButton(
+        ),
+        footer: GridTileBar(
+          backgroundColor: Colors.black87,
+          leading: Consumer<Product>(
+            builder: (ctx, product, _) => IconButton(
               onPressed: () {
-                cart.addItems(product.id, product.price, product.title);
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text('Item added to cart!'),
-                    duration: Duration(seconds: 2),
-                    action: SnackBarAction(
-                      label: 'UNDO',
-                      onPressed: () {
-                        cart.removeSingleItem(product.id);
-                      },
-                    ),
-                  ),
+                product.toggleFavoriteStatus(
+                  authData.token,
+                  authData.userID,
                 );
               },
-              icon: Icon(Icons.shopping_cart),
-              color: Theme.of(context).accentColor,
+              icon: Icon(
+                product.isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: Theme.of(context).accentColor,
+              ),
             ),
+          ),
+          title: Text(
+            product.title,
+            textAlign: TextAlign.center,
+          ),
+          trailing: IconButton(
+            onPressed: () {
+              cart.addItems(product.id, product.price, product.title);
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text('Item added to cart!'),
+                  duration: Duration(seconds: 2),
+                  action: SnackBarAction(
+                    label: 'UNDO',
+                    onPressed: () {
+                      cart.removeSingleItem(product.id);
+                    },
+                  ),
+                ),
+              );
+            },
+            icon: Icon(Icons.shopping_cart),
+            color: Theme.of(context).accentColor,
           ),
         ),
       ),
